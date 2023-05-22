@@ -1,0 +1,32 @@
+{
+  "name": "Lidelse Dedos",
+  "designation": "Lidelse Dedos(Group Manager)",
+  "email_id" : "Lidelse.Dedos@gastech.com.kronos",
+  "children": [
+    {
+      "name": "Felix Balas",
+      "designation": "",
+      "email_id" : "Felix.Balas@gastech.com.kronos",
+      "children": [
+        {  "name": "Lars Azada",
+          "designation": "",
+          "email_id" : "Lars.Azada@gastech.com.kronos"}
+      ]
+    },
+    {
+      "name": "Adra Nubarron",
+      "designation": "",
+      "email_id" : "Adra.Nubarron@gastech.com.kronos",
+      "children": [
+        {  "name": "Birgitta Frente",
+          "designation": "",
+          "email_id" : "Birgitta.Frente@gastech.com.kronos"}
+      ]
+    },
+    {
+      "name": "Ruscella Mies Haber",
+      "designation": "Ruscella Mies Haber(Administrative Assistant)",
+      "email_id" : "Ruscella.Mies.Haber@gastech.com.kronos"
+    }
+  ]
+}

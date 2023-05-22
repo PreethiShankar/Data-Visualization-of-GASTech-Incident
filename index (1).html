@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Avg No of words</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    .bar {
+      fill: steelblue;
+    }
+    .legend {
+      font-size: 14px;
+      font-weight: bold;
+    }
+    .legend rect {
+      width: 20px;
+      height: 20px;
+      margin-right: 5px;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+  <svg id="chart"></svg>
+  <script>
+    d3.csv("avg_bar.csv").then(function(data) {
+      // Group data by color
+      var groupedData = d3.group(data, d => d.color);
+      
+      // Extract unique colors
+      var colors = Array.from(groupedData.keys());
+
+
+      
+      // Flatten groupedData into an array of objects
+      var flattenedData = [];
+      groupedData.forEach(function(group) {
+        flattenedData = flattenedData.concat(group);
+      });
+      
+      // Define chart dimensions
+      var margin = {top: 40, right: 20, bottom: 30, left: 120};
+      var width = 800 - margin.left - margin.right;
+      var height = 800 - margin.top - margin.bottom;
+      
+      // Create x and y scales
+      var x = d3.scaleLinear().range([0, width]);
+      var y = d3.scaleBand().range([height, 0]).padding(0.1);
+      
+      // Create chart container
+      var svg = d3.select("#chart")
+                  .attr("width", width + margin.left + margin.right)
+                  .attr("height", height + margin.top + margin.bottom)
+                  .append("g")
+                  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+      
+      // Set x and y domains
+      x.domain([0, d3.max(data, d => +d.count)]);
+      y.domain(flattenedData.map(d => d.newgroup));
+      
+      // Draw bars
+      var bars = svg.selectAll(".bar")
+                    .data(flattenedData)
+                    .enter()
+                    .append("rect")
+                    .attr("class", "bar")
+                    .attr("x", 0)
+                    .attr("y", d => y(d.newgroup))
+                    .attr("width", 0) // Start with width = 0
+                    .attr("height", y.bandwidth())
+                    .style("fill", d => colors[colors.indexOf(d.color)]);
+      
+      // Add animation using transitions
+      bars.transition()
+          .duration(2000) // Transition duration in milliseconds
+          .attr("width", d => x(d.count)); // Animate the width to final value
+      
+      // Draw x-axis
+      svg.append("g")
+          .attr("class", "x axis")
+          .attr("transform", "translate(0," + height + ")")
+          .call(d3.axisBottom(x));
+      
+      // Draw y-axis
+      svg.append("g")
+          .attr("class", "y axis")
+          .call(d3.axisLeft(y));
+      
+      // Add y-axis label
+      svg.append("text")
+          .attr("transform", "rotate(-90)")
+          .attr("y", 0 - margin.left)
+          .attr("x", 0 - (height / 2))
+          .attr("dy", "1em")
+          .style("text-anchor", "middle")
+          .style("font-size", "20px")
+          .text("Newsgroup");
+      
+      // Add chart title
+      svg.append("text")
+          .attr("x", width / 2)
+          .attr("y", 0 - (margin.top / 2))
+          .attr("text-anchor", "middle")
+          .style("font-size", "25px")
+          .text("Average No. of words");
+      
+        // Add color legend
+      var legend = svg.append("g")
+                      .attr("class", "legend")
+                      .attr("transform", "translate(" + (width + margin.right - 100) + "," + (margin.top) + ")");
+                      
+      var legendItems = legend.selectAll("g")
+                              .data(colors)
+                              .enter()
+                              .append("g")
+                              .attr("transform", (d, i) => "translate(0," + (i * 25) + ")");
+                              
+      legendItems.append("rect")
+                 .attr("width", 20)
+                 .attr("height", 20)
+                 .style("fill", d => d);
+                 
+      legendItems.append("text")
+                 .attr("x", 30)
+                 .attr("y", 12)
+                 .text((d, i) => "Group " + (i + 1));
+    }).catch(function(error) {
+      console.log(error);
+    });
+
+</script>
+
+</body>
+</html>

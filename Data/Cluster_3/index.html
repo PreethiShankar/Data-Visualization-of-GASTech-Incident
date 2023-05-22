@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Bigram and Trigram Line Charts</title>
+  <!-- Load plotly.js -->
+  <script src="https://d3js.org/d3.v6.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-cloud/1.2.5/d3.layout.cloud.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+
+<body>
+  <!-- Create a div for the bigram chart -->
+  <div id="wordcloud"></div>
+
+  <!-- Create a div for the trigram chart -->
+  <div id="plot2"></div>
+
+  <div id="plot3"></div>
+  <script>
+    // Load the data from your CSV file
+    d3.csv("top_50_words_wordcloud_3.csv", function(data) {
+      data=[data]
+   console.log(data)
+      // Set up the layout options for the word cloud
+      var layout = d3.layout.cloud()
+      .size([100, 200])
+        .words(data.map(function(d) {
+          return {text: d.word, size: +d.frequency};
+        }))
+        .padding(0.1)
+        .rotate(function() { return ~~(Math.random() * 2) * 90; })
+       
+     .fontSize(function(d) { return d.size; })
+      //.fontSize(function(d) { return Math.max(5, Math.min(d.size, 30)); })
+  
+        .on("end", draw);
+
+      // Draw the word cloud
+      layout.start();
+
+      function draw(words) {
+        d3.select("#wordcloud").append("svg")
+          .attr("width", layout.size()[0])
+          .attr("height", layout.size()[1])
+          .append("g")
+          .attr("transform", "translate(" + layout.size()[0] / 2 + "," + layout.size()[1] / 2 + ")")
+          .selectAll("text")
+          .data(words)
+          .enter().append("text")
+          .style("font-size", function(d) { return d.size + "px"; })
+          .style("fill", "steelblue")
+          .attr("text-anchor", "middle")
+          .attr("transform", function(d) {
+            return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+          })
+          .text(function(d) { return d.text; });
+      }
+    });
+  </script>
+
+  
+  <!-- Load the CSV data for bigrams and create the chart -->
+  <script>
+    // Load the CSV data for bigrams and create the chart
+    Plotly.d3.csv("df_bigram_freq_3_top50_latest.csv", function(err, data) {
+      // Handle any errors while loading the data
+      if (err) {
+        console.error(err);
+        return;
+      }
+
+      // Convert the frequency values from strings to numbers
+      data.forEach(function(d) {
+        d.frequency = +d.frequency;
+      });
+
+      // Sort the data by frequency in descending order
+      data.sort(function(a, b) {
+        return b.frequency - a.frequency;
+      });
+
+      // Take the top 50 bigrams and their frequencies
+      var topBigrams = data.slice(0, 50);
+
+      // Create an array of x values (bigrams)
+      var x = topBigrams.map(function(d) {
+        return d.bigram;
+      });
+
+      // Create an array of y values (frequency)
+      var y = topBigrams.map(function(d) {
+        return d.frequency;
+      });
+
+      // Create the trace for the bigram line chart
+      var trace1 = {
+        x: x,
+        y: y,
+        type: 'line',
+        mode: 'lines+markers',
+        line: {
+          color: 'blue'
+        }
+      };
+
+      // Create the layout for the bigram line chart
+      var layout1 = {
+        title: 'Bigram Frequency',
+        xaxis: {
+          title: 'Bigram',
+          automargin: true
+        },
+        yaxis: {
+          title: 'Frequency',
+          automargin: true
+        }
+      };
+
+      // Create the data array and plot the bigram chart
+      var data1 = [trace1];
+      Plotly.newPlot('plot2', data1, layout1);
+    });
+  </script>
+
+  <!-- Load the CSV data for trigrams and create the chart -->
+  <script>
+    // Load the CSV data for trigrams and create the chart
+    Plotly.d3.csv("df_trigram_freq_3_top50_latest.csv", function(err, data) {
+      // Handle any errors while loading the data
+      if (err) {
+        console.error(err);
+        return;
+      }
+
+      // Convert the frequency values from strings to numbers
+      data.forEach(function(d) {
+        d.frequency = +d.frequency;
+      });
+
+      // Sort the data by frequency in descending order
+      data.sort(function(a, b) {
+        return b.frequency - a.frequency;
+      });
+
+      // Take the top 50 trigrams and their frequencies
+      var topTrigrams = data.slice(0, 50);
+
+      // Create an array of x values (trigrams)
+      var x = topTrigrams.map(function(d) {
+        return d.trigram;
+      });
+
+      // Create an array of y values (frequency)
+      var y = topTrigrams.map(function(d) {
+        return d.frequency;
+      });
+
+      // Create the trace for the trigram line chart
+      var trace2 ={
+        x: x,
+        y: y,
+        type: 'line',
+        mode: 'lines+markers',
+        line: {
+          color: 'blue'
+        }
+      };
+// Create the layout for the bigram line chart
+var layout2 = {
+        title: 'Trigram Frequency',
+        xaxis: {
+          title: 'Bigram',
+          automargin: true
+        },
+        yaxis: {
+          title: 'Frequency',
+          automargin: true
+        }
+      };
+
+      // Create the data array and plot the bigram chart
+      var data2 = [trace2];
+      Plotly.newPlot('plot3', data2, layout2);
+    });
+    </script>

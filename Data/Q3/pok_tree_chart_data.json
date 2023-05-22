@@ -1,0 +1,90 @@
+{
+    "name": "Henk Bodrogi - Leader - First Generation",
+    "designation": "Leader in 1st Generation POK (1997-2001)",
+    "children": [
+      { 
+        "name": "Carmin Osvaldo",
+        "designation": "Co-Leader in 1st Generation POK (1997-2001)"
+      },
+     { 
+        "name": "Valiente Mies",
+        "designation": "Member in 1st Generation POK (1997-2001)"
+      },      
+      { "name": "Jeroen Karel",
+      "designation": "Member in 1st Generation POK (1997-2001)",
+      "children": [
+        { "name": "Elaine Karel - Leader (Second Generation POK)",
+        "designation": "Activist in 1st Generation POK (1997-2001), Leader in second generation POK(2001-2009)",
+        "children": [
+            { 
+                "name": "Lorenzo Di Stefano",
+                "designation": "Member in 2nd, 3rd Generation POK (2001 Onwards)"
+              },
+              { 
+                "name": "Lucio Jakob",
+                "designation": "Member in 2nd, 3rd Generation POK (2001 Onwards), Co founder of Activist Group"
+              },
+              { 
+                "name": "Silvia Marek - Leader (Third generation POK)",
+                "designation": "Activist in 2nd Generation POK (2001-2009), Co founder of Activist Group, Leader in third generation POK(2009 Onwards)",
+                "children": [
+                    { 
+                        "name": "Potential POK members",
+                        "designation": "GASTech employees who have same surname as the people in POK",
+                        "children": [
+                            { 
+                                "name": "Edvard Vann",
+                                "designation": "Same Surname as Isia Vann, Mandor Vann <br> Employee in GASTech"
+                              },
+                              { 
+                                "name": "Loreto Bodrogi",
+                                "designation": "Same Surname as Henk Bodrogi <br> Employee in GASTech"
+                              },
+                              { 
+                                "name": "Minke Mies",
+                                "designation": "Same Surname as Valentine Mies <br> Employee in GASTech"
+                              },
+                              { 
+                                "name": "Ruscella Mies Haber",
+                                "designation": "Same Surname as Valentine Mies <br> Employee in GASTech"
+                              },
+                              { 
+                                "name": "Hennie Osvaldo",
+                                "designation": "Same Surname as Carmine Osvaldo <br> Employee in GASTech"
+                              },
+                              { 
+                                "name": "Henk Mies",
+                                "designation": "Same Surname as Valentine Mies <br> Employee in GASTech"
+                              }
+                            ]
+                      }
+                ]
+              },
+              { 
+                "name": "Mandor Vann",
+                "designation": "Member in 2nd, 3rd Generation POK (2001 Onwards)",
+                "children": [
+                    { 
+                        "name": "Isia Vann (Julina Vann's brother)- Family of Mandor Vann",
+                        "designation": "Family of Mandor Vann, Also employee in GASTech"
+                      }
+                ]
+              }
+        ]
+        }
+      ]
+     },
+      { 
+        "name": "Yanick Cato",
+        "designation": "Member in 1st Generation POK (1997-2001)"
+      },
+      { 
+        "name": "Joreto Katell",
+        "designation": "Member in 1st Generation POK (1997-2001)"
+      },
+      { 
+        "name": "Ale L. Hanne",
+        "designation": "Member in 1st Generation POK (1997-2001)"
+      }
+    ]
+  }

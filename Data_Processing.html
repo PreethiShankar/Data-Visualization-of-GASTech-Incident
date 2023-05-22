@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CSE 578 Project</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<meta charset="utf-8">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg" style="height:80px; padding: 10px; background-color:#274472;">
+  <a class="navbar-brand" href="index.html" style="font-size:25px;color: antiquewhite;" >Mini Challenge 1</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav" style="font-size:20px">
+    <ul class="navbar-nav" >
+      <li class="nav-item">
+        <a class="nav-link" href="background.html" style="color: antiquewhite;">Background</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="Data_Processing.html" style="color: antiquewhite;">Data Preprocessing</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="Q1.html" style="color: antiquewhite;">Q1</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="ques2.html" style="color: antiquewhite;">Q2</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="gantt.html" style="color: antiquewhite;">Q3</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="vis.html" style="color: antiquewhite;">Innovative</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div class="jumbotron">
+<h1 class="bg-dark text-white py-2 text-center" style="border-radius: 30px 30px 30px 30px;">Data Format</h1>
+<center><p><a  class="btn btn-primary" href="https://vast-challenge.github.io/2021/MC1.html">Data source link</a></p></center>
+<p>The Mini Challenge 1 has following related data.</p>
+<ol>
+    <li>News Articles (CSV file)</li>
+    <li>Historical Documents</li>
+    <li>Resumes (Word documents)</li>
+    <li>Email Headers (CSV File)</li>
+    <li>Factbook - Kronos (Word document)</li>
+    <li>Employee Records (XLSX File)</li>
+    <li>Factbook - Tethys (Word document)</li>
+    <li>Map of Krono (Image)</li>
+    <li>GAStech Kronos Organization Chart (PDF Image)</li>
+</ol>
+</div>
+
+<div class="jumbotron">
+<h1 class="bg-dark text-white py-2 text-center" style="border-radius: 30px 30px 30px 30px;">Creating a Merged CSV file that contains all the news articles</h1>
+<ol>
+<li><p>Adding screenshot of sample news article </br>
+    <img src="images/newsArticle.png" alt="Screenshot of news article" width="800" height="600"> 
+</br>
+    We have created new csv name cleanArticle.csv and added below column into them.We have added all the news article in this cv.
+    <ol>
+        <li>newsgroup --Represent publication house</li>
+        <li>id --Represent Unique no associated with with each news article</li>
+        <li>Title --Represent title of the news article</li>
+        <li>Location --Represent place of the article</li>
+        <li>Published--Represent Published date of the article.</li>
+        <li>Content --Represent Actual news content</li>
+    </ol>
+</br>
+Adding screenshot of cleanNewsArticle.csv </br>
+<img src="images/cleannewsArticle.png" alt="Screenshot of Clean News Articles " width="800" height="600"> 
+</p></li>
+<li>
+    <p>Adding Screenshot of sample Employee</p></br>
+    <img src="images/employee.png" alt="Screenshot of news article" width="800" height="600"> 
+</br>
+We have created new csv name cleanEmployee.csv and added below column into them.We have added have added only important column in our new csv file.
+    <ol>
+        <li>LastName --Represent last name of the employee</li>
+        <li>FirstName --Represent First name of the employee</li>
+        <li>Gender --Represent Gender of the employee</li>
+        <li>CitizenshipCountry --Represent Citizenship of the employee.</li>
+        <li>CurrentEmploymentType --Represent Employment type of the employee.</li>
+        <li>CurrentEmploymentTitle --Represent Employment title of the employee.</li>
+        <li>CurrentEmploymentStartDate --Represent start date of the employee.</li>
+        <li>EmailAddress --Represent email id of the employee</li>
+        <li>MilitaryServiceBranch --Represent Military branch employee served.</li>
+        <li>MilitaryDischargeType --Represent Military Military Discharge Type of the employee.</li>
+        <li>MilitaryDischargeDate --Reprsent Discharge date of the employee.</li>
+        <li>id --Represent unique id</li>
+        <li>FullName --Represent full name of the employee</li>
+    </ol>
+</br>
+    Adding screenshot of cleanEmployee.csv </br>
+    <img src="images/cleanEmployee.png" alt="Screenshot of Clean Employee " width="800" height="600"> 
+    </p>
+</br>
+<li>
+    <p>Adding Screenshot of Email header file</p>
+</br>
+<img src="images/email.png" alt="Screenshot of news article" width="800" height="600">
+</br>
+</br>
+</br>
+<p>We have created new csv name cleanEmail.csv and added below column into them.We made 
+    3 new column namely Source.label ,Target.label and Main subject.</br>
+    In the Original dataset Sent coloumn consist of all the people receiving the email but 
+    we made it separate and added in new row all the people receiving the mail.</br>
+    We made column MainSubject to segregate between Work related or Non Work related 
+    mail.
+</br>
+</p>
+    <ol>
+        <li>Source.Label --Represent person sending the mail.</li>
+        <li>Target.Label --Represent person receiving the mail.</li>
+        <li>Subject --Represent subjec of the mail.</li>
+        <li>SentDate --Represent sent date of the mail.</li>
+        <li>SentTime --Reprsent time of the mail.</li>
+        <li>Source--Represent Unique No associated with each employee.</li>
+        <li>Target--Represent Unique No associated with each employee.</li>
+        <li>MainSubject--Represent whether is WorkRelated or NonWorkRelated.</li>
+    </ol>
+</br>
+    <p>Adding Screenshot of cleanEmail.csv</p>
+    <img src="images/cleanEmail.png" alt="Screenshot of clean email" width="800" height="600">
+</br>
+</li>
+</ol>
+</li>
+</ol>
+</div>
+
+
+<div class="jumbotron">
+<h1 class="bg-dark text-white py-2 text-center" style="border-radius: 30px 30px 30px 30px;">Data Processing Technique used for Question 1</h1>
+
+<p>We have used TF-IDF to find correlation between different news publication.</br>
+    TF-IDF stands for Term Frequency-Inverse Document Frequency. It is a numerical statistic that reflects the importance of a word in a document corpus.
+</br>Goal of using TF-IDF is to identify words that are important in a particular document, relative to all other documents in the corpus.
+</br>
+    The term frequency (TF) component of TF-IDF measures how frequently a word appears in a document. It is calculated by dividing the number of times a 
+    word appears in a document by the total number of words in the document.
+    The idea behind this is that words that occur more frequently within a document are likely to be more important.</p>
+</br>
+<p>We have used TF-IDF algorithm to cluster the news source into 5 different group.</p>
+<ol>
+    <li>Cluster 1: Across the news sources, the most relevant words are related to the people of Elodis.</li>
+    <li>Cluster 2: Across the news sources, the most relevant words are related to the protests in Abila.</li>
+    <li>Cluster 3: Across the news sources, the most relevant words are related to the arrest details/protest situations.</li>
+    <li>Cluster 4: Across the news sources, the most relevant words are related to the designer drug situation in Abila.</li>
+    <li>Cluster 5: Across the news sources, the most relevant words are related to the GasTech and the industry.</li>
+</ol>
+</div>
+
+
+<div class="jumbotron">
+<h1 class="bg-dark text-white py-2 text-center" style="border-radius: 30px 30px 30px 30px;">Data Processing Technique used for Question 2</h1>
+
+
+<p>
+    We have used Latent Dichrelet Allocations Algorithm to find similarity between news sources.</br>
+    Latent Dirichlet Allocation (LDA) is a statistical model and unsupervised machine learning algorithm used to 
+    discover hidden topics in large collections of texts. 
+    The algorithm is based on the assumption that each document in a 
+    collection is a mixture of a small number of topics, and each word 
+    in a document is associated with a particular topic.
+</br>
+LDA works by representing documents as a bag of words, where the order of the words is not important. 
+It assumes that each document is a mixture of a fixed number of topics, and that each topic is a 
+distribution over words. The algorithm tries to learn the topic distribution 
+for each document and the word distribution for each topic, by iteratively 
+estimating the probability of a word belonging to a particular topic, and 
+the probability of a document containing a particular topic.</br>
+Using LDA we have clustered news source in 5 group.
+<ol>
+    <li>Cluster 1, whose primary source is Homeland Illumination, are supporters of the POK.</li>
+    <li>Cluster 2, whose primary source is Kronos Star, are against the POK.</li>
+    <li>Cluster 3, whose primary source The Abila Post, also leans towards being against the POK however, they're more balanced.</li>
+    <li>Cluster 4, whose primary source is International Times, focuses on drug situations in Abila. There are no evident biases.</li>
+    <li>Cluster 5, whose primary source is The World, focuses on largely GasTech.</li>
+</ol>
+</p>
+</div>
+<div class="jumbotron">
+<h1 class="bg-dark text-white py-2 text-center" style="border-radius: 30px 30px 30px 30px;">Data Processing Technique used for Question 3</h1>
+
+<p>We went through the historical documents and drew a
+tree chart and understood the organization structure of PoK. From
+this, we wrote JS logic to filter the employee records CSV to only
+have the people that have either the same full name or last name
+as the people of the PoK organization. This is the suspect pool
+we started with. Going through mail subjects given to us for the
+suspected people we identified, we were able to narrow down to a
+few suspicious mails based on few potentially suspicious keywords
+such as virus, arise etc. Equipped with this information, we wrote
+several JS scripts to filter the data of mail subjects to include the mail
+threads of the suspicious people, suspicious subjects and extension
+of people if they are on the suspicious mail threads. We crafted
+JSON data by utilizing the GASTech organization structure images
+provided in the data.</p>
+</div>
+</body>
+</html>

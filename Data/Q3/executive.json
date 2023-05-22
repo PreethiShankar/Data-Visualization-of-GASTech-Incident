@@ -1,0 +1,47 @@
+{
+  "name": "Sten Sanjorge Jr ",
+  "designation": "Sten Sanjorge Jr (CEO)",
+  "email_id" : "Sten.Sanjorge Jr.@gastech.com.kronos",
+  "children": [
+    {
+      "name": "Ingrid Barranco",
+      "designation": "Ingrid Barranco (CFO)",
+      "email_id" : "Ingrid.Barranco@gastech.com.kronos",
+      "children": [
+        {  "name": "Anda Ribera",
+          "designation": "Anda Ribera (Administrative Assistant)",
+          "email_id" : "Anda.Ribera@gastech.com.kronos"}
+      ]
+    },
+    {
+      "name": "Orhan Strum",
+      "designation": "Orhan Strum (COO)",
+      "email_id" : "Orhan.Strum@gastech.com.kronos",
+      "children": [
+        {  "name": "Linda Lagos",
+          "designation": "Linda Lagos (Administrative Assistant)",
+          "email_id" : "Linda.Lagos@gastech.com.kronos"}
+      ]
+    },
+    {
+      "name": "Ada Campo-Corrente",
+      "designation": "Ada Campo-Corrente (CIO)",
+      "email_id" : "Ada.Campo-Corrente@gastech.com.kronos",
+      "children": [
+        {  "name": "Rachel Pantanal",
+          "designation": "Rachel Pantanal (Administrative Assistant)",
+          "email_id" : "Rachel.Pantanal@gastech.com.kronos"}
+      ]
+    },
+    {
+      "name": "Mat Bramar",
+      "designation": "Mat Bramar (Administrative Assistant)",
+      "email_id" : "Mat.Bramar@gastech.com.kronos"
+    },
+    {
+      "name": "Willem Vasco-Pais",
+      "designation": "Willem Vasco-Pais (ESA)",
+      "email_id" : "Willem.Vasco-Pais@gastech.com.kronos"
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "name": "Marin Onda",
+  "designation": "Marin Onda (Site Manager)",
+  "email_id" : "Marin.Onda@gastech.com.kronos",
+  "children": [
+    {
+      "name": "Elsa Orilla",
+      "designation": "",
+      "email_id" : "Elsa.Orilla@gastech.com.kronos",
+      "children": [
+        {  "name": "Axel Calzas",
+          "designation": "",
+          "email_id" : "Axel.Calzas@gastech.com.kronos"}
+      ]
+    },
+    {
+      "name": "Vira Frente",
+      "designation": "",
+      "email_id" : "Vira.Frente@gastech.com.kronos",
+      "children": [
+        {  "name": "Brand Tempestad",
+          "designation": "",
+          "email_id" : "Brand.Tempestad@gastech.com.kronos"}
+      ]
+    },
+    {
+      "name": "Isande Borrasca",
+      "designation": "",
+      "email_id" : "Isande.Borrasca@gastech.com.kronos",
+      "children": [
+        {  "name": "Kare Orilla",
+          "designation": "",
+          "email_id" : "Kare.Orilla@gastech.com.kronos"}
+      ]
+    },
+    {
+      "name": "Gustav Cazar",
+      "designation": "",
+      "email_id" : "Gustav.Cazar@gastech.com.kronos"
+    }
+  ]
+}

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CSE 578 Project</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style> /* set the CSS */
+    .wrapper {
+        display: flex;
+    }
+    .node circle {
+        fill: #fff;
+        stroke: steelblue;
+        stroke-width: 3px;
+    }
+    .node text { font: 12px sans-serif; }
+    .node--internal text {
+        text-shadow: 0 1px 0 #fff, 0 -1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff;
+    }
+    .link {
+        fill: none;
+        stroke: #ccc;
+        stroke-width: 2px;
+    }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg" style="height:80px; padding: 10px; background-color:#274472;">
+  <a class="navbar-brand" href="index.html" style="font-size:25px;color: antiquewhite;" >Mini Challenge 1</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav" style="font-size:20px">
+    <ul class="navbar-nav" >
+      <li class="nav-item">
+        <a class="nav-link" href="background.html" style="color: antiquewhite;">Background</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="Data_Processing.html" style="color: antiquewhite;">Data Preprocessing</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="Q1.html" style="color: antiquewhite;">Q1</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="ques2.html" style="color: antiquewhite;">Q2</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="gantt.html" style="color: antiquewhite;">Q3</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="vis.html" style="color: antiquewhite;">Innovative</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+    <div id="tooltip" style="position: absolute; z-index: 999; visibility: hidden; padding: 10px; background-color: rgba(0, 0, 0, 0.8); color: white; border-radius: 5px; font-size: 12px;"></div>
+    <div class="wrapper">
+        <div id="graph-tree">
+            <h3 style="text-align: center; margin-top : 5px">PoK organization chart</h3>
+                <svg></svg>
+
+        </div>
+        <div id="graph-gantt">
+            <h3 style="text-align: center; margin-top : 5px">Gantt chart</h3>
+            <svg></svg>
+        </div>
+    </div>
+    <p style="margin: 10px">
+        We have identified Isia Vann as the employee from GASTech who is also direcytly related to the Protector of Kronos. We have drawn few
+        employees who are potential suspects based on their surnames which are matching with members of POK. To further analyse this information,
+        a gantt chart has been drawn to check their timelines, from which we have found that Loreto Bodrogi, Minke Mies, Henk Mies, Edvard Vann
+        have started working around the same time in GASTech. Isia Vann and Loreto Bodrigo have worked in Armed Forces of Kronos during the same time.
+    </p>
+    <script>
+        let data = [], max = 0, min = 2024;
+
+
+        d3.csv('Data/Q3/emp-resume-update.csv')
+            .then(function (value) {
+                value.forEach(item => {
+                    data.push(item);
+                    max = Math.max(max, new Date(item.StartTime));
+                    min = Math.min(min, new Date(item.EndTime));
+                });
+                drawGannt();
+
+                // generateDataForSankey("1970", "2023", "");
+                // generateDataForSankey("1970", "2023", 'Varja Lagos');
+            });
+
+        function drawGannt() {
+            // Define SVG dimensions and margins
+            const margin = { top: 20, right: 20, bottom: 60, left: 120 };
+            const width = 700 - margin.left - margin.right;
+            const height = 600 - margin.top - margin.bottom;
+
+            // Define color scale
+            const colorScale = d3.scaleOrdinal()
+                .domain(data.map(d => d.Task)) // specify input values to map to colors
+                .range(d3.schemeCategory10);
+
+            // Define scales
+            const xScale = d3.scaleTime()
+                // .domain([new Date(String(min), '1', '1'), new Date(String(max), '1', '1')])
+                // .domain([new Date(min), new Date(max)])
+                .domain([new Date('2000-1-1'), new Date('2015-1-1')])
+                .range([0, width]);
+
+            const yScale = d3.scaleBand()
+                .domain(data.map(d => d.Type))
+                .range([0, height])
+                .paddingInner(0.1);
+
+            // Define axes
+            const xAxis = d3.axisBottom(xScale)
+                // .ticks(d3.timeMonth.every(10))
+                .tickFormat(d3.timeFormat('%Y'));
+
+            const yAxis = d3.axisLeft(yScale);
+
+            // Define SVG
+            const svg = d3.select('body #graph-gantt svg')
+                // .append('svg')
+                .attr('width', width + margin.left + margin.right)
+                .attr('height', height + margin.top + margin.bottom)
+                .append('g')
+                .attr('transform', `translate(${margin.left}, ${margin.top})`);
+
+            // Draw x-axis
+            svg.append('g')
+                .attr('class', 'x axis')
+                .attr('transform', `translate(0, ${height})`)
+                .call(xAxis);
+
+            // Draw y-axis
+            svg.append('g')
+                .attr('class', 'y axis')
+                .call(yAxis);
+
+            // Draw bars
+            const bars = svg.selectAll('.bar')
+                .data(data)
+                .enter()
+                .append('rect')
+                .attr('class', 'bar')
+                .attr('x', d => xScale(new Date(d.StartTime)))
+                .attr('y', d => yScale(d.Type))
+                .attr('width', d => xScale(new Date(d.EndTime)) - xScale(new Date(d.StartTime)))
+                .attr('height', yScale.bandwidth())
+                .attr('fill', d => colorScale(d.Task))
+                .on('click', function (event, data) {
+                    // drawSankey(data.Type);
+                    window.location.href = `sankey.html?person=${data.Type}`;
+                });
+
+            // Add tooltips
+            bars.append('title')
+                // .text(d => `${d.Task}\n${d.StartTime} - ${d.EndTime}`);
+                .text(d => `${d.Type}\n${d.Task}\n${d.Details}\n${d.StartTime} - ${d.EndTime}`);
+
+            // Add the legend
+            const legend = svg.append("g")
+                .attr("transform", "translate(0," + `${height + 30}`   + ")");
+
+            legend.append("rect")
+                .attr("x", 0)
+                .attr("y", 0)
+                .attr("width", 10)
+                .attr("height", 10)
+                .attr("fill", "#1f77b4");
+
+            legend.append("text")
+                .attr("x", 15)
+                .attr("y", 10)
+                .text("Education");
+
+            legend.append("rect")
+                .attr("x", 90)
+                .attr("y", 0)
+                .attr("width", 10)
+                .attr("height", 10)
+                .attr("fill", "#ff7f0e");
+
+            legend.append("text")
+                .attr("x", 105)
+                .attr("y", 10)
+                .text("Armed Forces");
+
+            legend.append("rect")
+                .attr("x", 210)
+                .attr("y", 0)
+                .attr("width", 10)
+                .attr("height", 10)
+                .attr("fill", "#d62728");
+
+            legend.append("text")
+                .attr("x", 225)
+                .attr("y", 10)
+                .text("Previous Employment");
+
+            legend.append("rect")
+                .attr("x", 385)
+                .attr("y", 0)
+                .attr("width", 10)
+                .attr("height", 10)
+                .attr("fill", "#2ca02c");
+
+            legend.append("text")
+                .attr("x", 400)
+                .attr("y", 10)
+                .text("Current Employment");
+        }
+    </script>
+    <script>
+        // set the dimensions and margins of the diagram
+        var margin = {top: 40, right: 5, bottom: 50, left: 5},
+            width = 750 - margin.left - margin.right,
+            height = 600 - margin.top - margin.bottom;
+        // declares a tree layout and assigns the size
+        var treemap = d3.tree()
+            .size([width, height]);
+        //  assigns the data to a hierarchy using parent-child relationships
+        d3.json("Data/Q3/pok_tree_chart_data.json").then(function(treeData) {
+//  assigns the data to a hierarchy using parent-child relationships
+            var nodes = d3.hierarchy(treeData, function(d) {
+                return d.children;
+            });
+// maps the node data to the tree layout
+            nodes = treemap(nodes);
+// append the svg obgect to the body of the page
+// appends a 'group' element to 'svg'
+// moves the 'group' element to the top left margin
+            var svg = d3.select("body  #graph-tree svg")
+                    .attr("width", width + margin.left + margin.right)
+                    .attr("height", height + margin.top + margin.bottom),
+                g = svg.append("g")
+                    .attr("transform",
+                        "translate(" + margin.left + "," + margin.top + ")");
+// adds the links between the nodes
+            var link = g.selectAll(".link")
+                .data( nodes.descendants().slice(1))
+                .enter().append("path")
+                .attr("class", "link")
+                .attr("d", function(d) {
+                    return "M" + d.x + "," + d.y
+                        + "C" + d.x + "," + (d.y + d.parent.y) / 2
+                        + " " + d.parent.x + "," +  (d.y + d.parent.y) / 2
+                        + " " + d.parent.x + "," + d.parent.y;
+                });
+            function handleMouseOver(d, i , e) {
+                // Get the tooltip element
+                const tooltip = d3.select("#tooltip");
+                // Show the tooltip and position it near the node
+                tooltip
+                    .style("visibility", "visible")
+                    .html(i.data.name + "<br>" + i.data.designation)
+                    .style("left", (d.pageX + 10) + "px")
+                    .style("top", (d.pageY + 10) + "px");
+            }
+            function handleMouseOut(d) {
+                // Hide the tooltip
+                d3.select("#tooltip")
+                    .style("visibility", "hidden");
+            }
+// adds each node as a group
+            var node = g.selectAll(".node")
+                .data(nodes.descendants())
+                .enter().append("g")
+                .attr("class", function(d) {
+                    return "node" +
+                        (d.children ? " node--internal" : " node--leaf"); })
+                .attr("transform", function(d) {
+                    return "translate(" + d.x + "," + d.y + ")"; });
+// adds the circle to the node
+            node.append("circle")
+                .attr("r", 10)
+                .on("mouseover", handleMouseOver)
+                .on("mouseout", handleMouseOut);
+// adds the text to the node
+            node.append("text")
+                .attr("dy", ".35em")
+                .attr("y", function(d) { return d.children ? -20 : 20; })
+                .style("text-anchor", "middle")
+                .text(function(d) { return d.data.name; });
+        });
+        </script>
+</body>
+</html>

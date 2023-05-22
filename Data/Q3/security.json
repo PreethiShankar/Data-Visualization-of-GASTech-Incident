@@ -1,0 +1,62 @@
+{
+  "name": "Felix Resumir",
+  "designation": "Felix Resumir (Group Manager)",
+  "email_id" : "Felix.Resumir@gastech.com.kronos",
+  "children": [
+    {
+      "name": "Stenig Fusil",
+      "designation": "",
+      "email_id" : "Stenig.Fusil@gastech.com.kronos",
+      "children": [
+        {  "name": "Isia Vann",
+          "designation": "",
+          "email_id" : "Isia.Vann@gastech.com.kronos"}
+      ]
+    },
+    {
+      "name": "Varja Lagos",
+      "designation": "",
+      "email_id" : "Varja.Lagos@gastech.com.kronos",
+      "children": [
+        {  "name": "Hideki Cocinaro",
+          "designation": "",
+          "email_id" : "Hideki.Cocinaro@gastech.com.kronos"}
+      ]
+    },
+    {
+      "name": "Hennie Osvaldo",
+      "designation": "",
+      "email_id" : "Hennie.Osvaldo@gastech.com.kronos",
+      "children": [
+        {  "name": "Kanon Herrero",
+          "designation": "",
+          "email_id" : "Kanon.Herrero@gastech.com.kronos"}
+      ]
+    },
+    {
+      "name": "Loreto Bodrogi",
+      "designation": "",
+      "email_id" : "Loreto.Bodrogi@gastech.com.kronos",
+      "children": [
+        {  "name": "Minke Mies",
+          "designation": "",
+          "email_id" : "Minke.Mies@gastech.com.kronos"}
+      ]
+    },
+    {
+      "name": "Edvard Vann",
+      "designation": "",
+      "email_id" : "Edvard.Vann@gastech.com.kronos",
+      "children": [
+        {  "name": "Inga Ferro",
+          "designation": "",
+          "email_id" : "Inga.Ferro@gastech.com.kronos"}
+      ]
+    },
+    {
+      "name": "Cornelia Lais",
+      "designation": "",
+      "email_id" : "Cornelia.Lais@gastech.com.kronos"
+    }
+  ]
+}

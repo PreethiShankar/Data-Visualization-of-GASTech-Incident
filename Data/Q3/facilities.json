@@ -1,0 +1,63 @@
+{
+  "name": "Bertrand Ovan",
+  "designation": "Bertrand Ovan(Group Manager)",
+  "email_id" : "Bertrand.Ovan@gastech.com.kronos",
+  "children": [
+    {
+      "name": "Dante Coginian",
+      "designation": "Dante Coginian (Lead Janitor)",
+      "email_id" : "Dante.Coginian@gastech.com.kronos",
+      "children": [
+        {  "name": "Varro Awelon",
+          "designation": "Varro Awelon",
+          "email_id" : "Varro.Awelon@gastech.com.kronos"},
+        { "name":  "Emile Arpa",
+          "designation": "Emile Arpa",
+          "email_id" : "Emile.Arpa@gastech.com.kronos"}
+      ]
+    },
+    {
+      "name": "Benito Hawelon",
+      "designation": "Benito Hawelon",
+      "email_id" : "Benito.Hawelon@gastech.com.kronos",
+      "children": [
+        {  "name": "Claudio Hawelon",
+          "designation": "Claudio Hawelon",
+          "email_id" : "Claudio.Hawelon@gastech.com.kronos"},
+        {   "name":  "Henk Mies",
+          "designation": "",
+          "email_id" : "Henk.Mies@gastech.com.kronos"}
+      ]
+    },
+    {
+      "name": "Valeria Morlun",
+      "designation": "",
+      "email_id" : "Valeria.Morlun@gastech.com.kronos",
+      "children": [
+        {  "name": "Adan Morlun",
+          "designation": "",
+          "email_id" : "Adan.Morlun@gastech.com.kronos"}
+      ]
+    },
+    {
+      "name": "Irene Nant",
+      "designation": "",
+      "email_id" : "Irene.Nant@gastech.com.kronos",
+      "children": [
+        {  "name": "Dylan Scozzese",
+          "designation": "",
+          "email_id" : "Dylan.Scozzese@gastech.com.kronos"}
+      ]
+    },
+    {
+      "name": "Albina Hafon",
+      "designation": "",
+      "email_id" : "Albina.Hafon@gastech.com.kronos",
+      "children": [
+        {  "name": "Cecilia Morluniau",
+          "designation": "",
+          "email_id" : "Cecilia.Morluniau@gastech.com.kronos"}
+      ]
+    }
+  ]
+}

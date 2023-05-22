@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>CSE 578 Project</title>
+  <!-- Load plotly.js -->
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-cloud/1.2.5/d3.layout.cloud.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg" style="height:80px; padding: 10px; background-color:#274472;">
+  <a class="navbar-brand" href="index.html" style="font-size:25px;color: antiquewhite;" >Mini Challenge 1</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav" style="font-size:20px">
+    <ul class="navbar-nav" >
+      <li class="nav-item">
+        <a class="nav-link" href="background.html" style="color: antiquewhite;">Background</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="Data_Processing.html" style="color: antiquewhite;">Data Preprocessing</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="Q1.html" style="color: antiquewhite;">Q1</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="ques2.html" style="color: antiquewhite;">Q2</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="gantt.html" style="color: antiquewhite;">Q3</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="vis.html" style="color: antiquewhite;">Innovative</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div><h1 id="heading" class="container jumbotron bg-light text-dark text-center rounded"></h1></div>
+  <!-- Create a div for the bigram chart -->
+  <div id="my_dataviz"></div>
+
+  <!-- Create a div for the trigram chart -->
+  <div id="plot2"></div>
+
+  <div id="plot3"></div>
+  <script>
+    function getURLParameter(name) {
+  var param = new RegExp('[?&]' + name + '=([^&#]*)').exec(window.location.href);
+  return param && decodeURIComponent(param[1]);
+}
+
+// Get the values of var1 and var2 from URL parameters
+var cluster = getURLParameter("var1");
+var vis = getURLParameter("var2");
+var col= getURLParameter("var3");
+
+if(vis=="wc"){
+  drawWordCloud();
+}
+else{
+  drawbitrigram();
+}
+function drawWordCloud(){
+  var num=parseInt(cluster.substring(cluster.length-1,cluster.length));
+document.getElementById("heading").innerText = "Wordcloud for " + cluster.substring(0,cluster.length-2) + " "+ (num+1);
+    // Load the data from your CSV file
+    d3.csv("./Data/"+cluster+"/top_50.csv").then(function(data) {
+  var myWords = [];
+  data.forEach(function(d) {
+    myWords.push({word: d.word, size: +d.frequency});
+  });
+  var margin = {top: 10, right: 10, bottom: 10, left: 10},
+    width = 1400 - margin.left - margin.right,
+    height = 1050 - margin.top - margin.bottom;
+
+// append the svg object to the body of the page
+var svg = d3.select("#my_dataviz").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
+
+// Constructs a new cloud layout instance. It run an algorithm to find the position of words that suits your requirements
+// Wordcloud features that are different from one word to the other must be here
+var layout = d3.layout.cloud()
+  .size([width, height])
+  .words(myWords.map(function(d) { return {text: d.word, size:d.size}; }))
+  .padding(25)        //space between words
+  .rotate(function() { return ~~(Math.random() * 2) * 90; })
+  .fontSize(function(d) { return d.size; })      // font size of words
+  .on("end", draw);
+layout.start();
+
+// This function takes the output of 'layout' above and draw the words
+// Wordcloud features that are THE SAME from one word to the other can be here
+function draw(words) {
+  svg
+    .append("g")
+      .attr("transform", "translate(" + layout.size()[0] / 2 + "," + layout.size()[1] / 2 + ")")
+      .selectAll("text")
+        .data(words)
+      .enter().append("text")
+        .style("font-size", function(d) { return d.size; })
+        .style("fill", col)
+        .attr("text-anchor", "middle")
+        .style("font-family", "Impact")
+        .attr("transform", function(d) {
+          return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+        })
+        .text(function(d) { return d.text; });
+}
+  console.log(myWords);
+});
+
+// List of words
+var myWords = [{word: "Running", size: "10"}, {word: "Surfing", size: "20"}, {word: "Climbing", size: "50"}, {word: "Kiting", size: "30"}, {word: "Sailing", size: "20"}, {word: "Snowboarding", size: "60"} ]
+  }
+
+    function drawbitrigram(){
+    // Load the CSV data for bigrams and create the chart
+    Plotly.d3.csv("./Data/"+cluster+"/df_bigram.csv", function(err, data) {
+      // Handle any errors while loading the data
+      if (err) {
+        console.error(err);
+        return;
+      }
+
+      // Convert the frequency values from strings to numbers
+      data.forEach(function(d) {
+        d.frequency = +d.frequency;
+      });
+
+      // Sort the data by frequency in descending order
+      data.sort(function(a, b) {
+        return b.frequency - a.frequency;
+      });
+
+      // Take the top 50 bigrams and their frequencies
+      var topBigrams = data.slice(0, 50);
+
+      // Create an array of x values (bigrams)
+      var x = topBigrams.map(function(d) {
+        return d.bigram;
+      });
+
+      // Create an array of y values (frequency)
+      var y = topBigrams.map(function(d) {
+        return d.frequency;
+      });
+
+      // Create the trace for the bigram line chart
+      var trace1 = {
+        x: x,
+        y: y,
+        type: 'line',
+        mode: 'lines+markers',
+        line: {
+          color: col
+        }
+      };
+
+      // Create the layout for the bigram line chart
+      var layout1 = {
+        title: 'Bigram Frequency',
+        xaxis: {
+          title: 'Bigram',
+          automargin: true
+        },
+        yaxis: {
+          title: 'Frequency',
+          automargin: true
+        }
+      };
+
+      // Create the data array and plot the bigram chart
+      var data1 = [trace1];
+      Plotly.newPlot('plot2', data1, layout1);
+    });
+    // Load the CSV data for trigrams and create the chart
+    Plotly.d3.csv("./Data/"+cluster+"/df_trigram.csv", function(err, data) {
+      // Handle any errors while loading the data
+      if (err) {
+        console.error(err);
+        return;
+      }
+
+      // Convert the frequency values from strings to numbers
+      data.forEach(function(d) {
+        d.frequency = +d.frequency;
+      });
+
+      // Sort the data by frequency in descending order
+      data.sort(function(a, b) {
+        return b.frequency - a.frequency;
+      });
+
+      // Take the top 50 trigrams and their frequencies
+      var topTrigrams = data.slice(0, 50);
+
+      // Create an array of x values (trigrams)
+      var x = topTrigrams.map(function(d) {
+        return d.trigram;
+      });
+
+      // Create an array of y values (frequency)
+      var y = topTrigrams.map(function(d) {
+        return d.frequency;
+      });
+
+      // Create the trace for the trigram line chart
+      var trace2 ={
+        x: x,
+        y: y,
+        type: 'line',
+        mode: 'lines+markers',
+        line: {
+          color: col
+        }
+      };
+// Create the layout for the bigram line chart
+var layout2 = {
+        title: 'Trigram Frequency',
+        xaxis: {
+          title: 'Trigram',
+          automargin: true
+        },
+        yaxis: {
+          title: 'Frequency',
+          automargin: true
+        }
+      };
+
+      // Create the data array and plot the bigram chart
+      var data2 = [trace2];
+      Plotly.newPlot('plot3', data2, layout2);
+    });
+  }
+    </script>

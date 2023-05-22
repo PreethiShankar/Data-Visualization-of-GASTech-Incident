@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>CSE 578 Project</title>
+      <script src="https://d3js.org/d3.v7.min.js"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+  
+    <style>
+            .timeline {
+            width: 80%;
+            height: 500px;
+            margin: 0 auto;
+            position: relative;
+        }
+        .timeline:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 100%;
+            background-color: #ccc;
+        }
+        .timeline .timeline-item {
+            position: relative;
+            margin-bottom: 100px;
+            padding: 20px;
+            border-bottom: 1px solid;
+            display: flex;
+            align-items: center;
+        }
+        .timeline-date:before {
+            /* Style for the circle */
+            content: "";
+            display: block;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background-color: grey; /* color for the circle */
+            position: absolute;
+            top: 50%;
+            left: -7px;
+            transform: translateY(-50%);
+        }
+        .timeline .timeline-date {
+            width: 100px;
+            text-align: center;
+            font-size: 18px;
+            margin-left:50px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .timeline-content {
+        width: 40%; /* set the desired width for the content box */
+        max-height: 200px;
+        overflow-y: auto;
+        word-wrap: break-word; /* enable word wrapping within the box */
+        border: 1px solid #ccc; /* add border for the box */
+        padding: 10px; /* add padding for spacing within the box */
+        font-size: 20px; /* set font size to 11px */
+        font-weight: normal; /* set font weight to normal */
+        font-family: Arial, sans-serif; /* set font family to Arial or desired font */
+    }
+    .timeline-newsgroup {
+        width: 40%; /* set the desired width for the content box */
+        max-height: 200px;
+        position: absolute;
+        margin-left: 60%;
+        padding: 10px; /* add padding for spacing within the box */
+        font-size: 20px; /* set font size to 11px */
+        font-weight: normal; /* set font weight to normal */
+        font-family: Arial, sans-serif; /* set font family to Arial or desired font */
+    }
+        .timeline .timeline-content h3 {
+            margin: 0 0 5px;
+            font-size: 18px;
+        }
+    .highlight-orange {
+        color: orange;
+        font-weight: bold;
+    }
+
+    .highlight-blue {
+        color: blue;
+        font-weight: bold;
+    }
+    .highlight-red {
+        color: red;
+        font-weight: bold;
+    }
+
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg" style="height:80px; padding: 10px; background-color:#274472;">
+  <a class="navbar-brand" href="index.html" style="font-size:25px;color: antiquewhite;" >Mini Challenge 1</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav" style="font-size:20px">
+    <ul class="navbar-nav" >
+      <li class="nav-item">
+        <a class="nav-link" href="background.html" style="color: antiquewhite;">Background</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="Data_Processing.html" style="color: antiquewhite;">Data Preprocessing</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="Q1.html" style="color: antiquewhite;">Q1</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="ques2.html" style="color: antiquewhite;">Q2</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="gantt.html" style="color: antiquewhite;">Q3</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="vis.html" style="color: antiquewhite;">Innovative</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+    <div class="card" style="margin: 10px;">
+    <h2 class="jumbotron"><center> Choose the Primary Source </center> </h2>
+    <center>
+
+    <select class="form-select form-select-lg mb-3 bg-secondary text-white" aria-label=".form-select-lg example" style="width:50%;text-align: center;" id="myDropdown" onchange="dropdownOnChange()">
+        <option value="option1">International News 2005</option>
+        <option value="option2">Kronos Star 2001</option>
+        <option value="option3">Kronos Star 2011</option>
+        <option value="option4">Everyday News 2013</option>
+    </select>
+</center>
+</div>
+    <h2 id="head" class="text-center bg-dark text-white" style="margin:20px"></h2>
+    <div id="time" class="timeline"></div>
+
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="timeline.js"></script>
+    <script>
+      window.onload = function() {
+          // Call your function here
+          inno1();
+        };
+
+function setBodyContent(selectedValue) {
+  document.body.innerHTML = `
+    <nav class="navbar navbar-expand-lg" style="height:80px; padding: 10px; background-color:#274472;">
+  <a class="navbar-brand" href="index.html" style="font-size:25px;color: antiquewhite;" >Mini Challenge 1</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav" style="font-size:20px">
+    <ul class="navbar-nav" >
+      <li class="nav-item">
+        <a class="nav-link" href="background.html" style="color: antiquewhite;">Background</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="Data_Processing.html" style="color: antiquewhite;">Data Preprocessing</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="Q1.html" style="color: antiquewhite;">Q1</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="ques2.html" style="color: antiquewhite;">Q2</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="gantt.html" style="color: antiquewhite;">Q3</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="vis.html" style="color: antiquewhite;">Innovative</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+    <div class="card" style="margin: 10px;">
+    <h2 class="jumbotron"><center> Choose the Primary Source </center> </h2>
+    <center>
+    <select class="form-select form-select-lg mb-3 bg-secondary text-white" aria-label=".form-select-lg example" style="width:50%;text-align: center;" id="myDropdown" onchange="dropdownOnChange()">
+        <option value="option1" ${selectedValue === 'option1' ? 'selected' : ''}>International News 2005</option>
+        <option value="option2" ${selectedValue === 'option2' ? 'selected' : ''}>Kronos Star 2001</option>
+        <option value="option3" ${selectedValue === 'option3' ? 'selected' : ''}>Kronos Star 2011</option>
+        <option value="option4" ${selectedValue === 'option4' ? 'selected' : ''}>Everyday News 2013</option>
+    </select>
+    </center>
+</div>
+    <h2 id="head" class="text-center bg-dark text-white" style="margin:20px"></h2>
+    <div id="time" class="timeline"></div>
+
+  `;
+}
+function dropdownOnChange() {
+            // Get the selected value from the dropdown
+            var selectedValue = document.getElementById("myDropdown").value;
+
+            // Call a function with the selected value
+            handleDropdownSelection(selectedValue);
+        }
+
+        // Function to handle the selected value from the dropdown
+        function handleDropdownSelection(selectedValue) {
+            // Perform actions based on the selected value
+            switch (selectedValue) {
+                case "option1":
+                    setBodyContent(selectedValue);
+                    inno1();
+                    break;
+                case "option2":
+                    setBodyContent(selectedValue);
+                    inno2();
+                    break;
+                case "option3":
+                    setBodyContent(selectedValue);
+                    inno3();
+                    break;
+                case "option4":
+                    setBodyContent(selectedValue);
+                    inno4();
+                    break;
+                default:
+                    alert(selectedValue);
+                    break;
+            }
+        }
+
+
+
+      // Data for the timeline
+function inno1() {
+document.getElementById("head").innerHTML = "<h2>A Dozen Arrested at River Tiskele in 2005</h2>";
+
+d3.csv("Data/inno_1.csv").then(function(data) {
+    var timeline = d3.select('.timeline');
+
+// Update the height of .timeline element
+var newHeight = 2276; // Set the new height value
+timeline.style('height', newHeight + 'px');
+
+    // Parse the date strings into date objects
+    var dateFormat = d3.timeParse("%d/%m/%y");
+    data.forEach(function(d) {
+        d.Published = dateFormat(d.Published);
+    });
+
+    // Convert the data to the desired format
+    var timelineData = data.map(function(d) {
+        return { news:d.newsgroup, date: d.Published, event: d.Content, title:d.Title };
+    });
+
+    // Create the timeline using D3.js
+    var timeline = d3.select(".timeline")
+        .selectAll(".timeline-item")
+        .data(timelineData)
+        .enter()
+        .append("div")
+        .attr("class", "timeline-item");
+
+    timeline.append("div")
+        .attr("class", "timeline-date")
+        .text(function(d) { 
+            // Format the date object into a string
+            return (d3.timeFormat("%d/%m/%y")(d.date)); 
+        });
+
+    timeline.append("div")
+        .attr("class", "timeline-content")
+        .html(function(d) { 
+            // Highlight "arrest" and "arrested" in orange, "river" in blue
+            var content =d.event;
+            content = content.replace(/(arrests|arrested|arrest)/gi, "<span class='highlight-orange'>$1</span>");
+            content = content.replace(/(river tiskele|Tiskele|tiskele)/gi, "<span class='highlight-blue'>$1</span>");
+            content = content.replace(/(protesters)/gi, "<span class='highlight-red'>$1</span>");
+            return content;
+        });
+
+    timeline.append("div")
+        .attr("class", "timeline-newsgroup")
+        .html(function(d) { 
+            // Add the newsgroup on the right side of the date
+            return "<h1>Source: "+d.news+"</h1><h3>Title: "+d.title+"</h3>";
+        });
+
+}).catch(function(error) {
+    console.error("Error loading CSV file:", error);
+});
+
+
+
+
+}
+
+
+
+function inno2() {
+    var timeline = d3.select('.timeline');
+
+// Update the height of .timeline element
+var newHeight = 2260; // Set the new height value
+timeline.style('height', newHeight + 'px');
+document.getElementById("head").innerHTML = "<h2>Arrest at Tiskele Bend in 2001</h2>";
+
+d3.csv("Data/inno_2.csv").then(function(data) {
+    // Parse the date strings into date objects
+    var dateFormat = d3.timeParse("%d/%m/%y");
+    data.forEach(function(d) {
+        d.Published = dateFormat(d.Published);
+    });
+
+    // Convert the data to the desired format
+    var timelineData = data.map(function(d) {
+        return { news:d.newsgroup, date: d.Published, event: d.Content, title:d.Title };
+    });
+
+    // Create the timeline using D3.js
+    var timeline = d3.select(".timeline")
+        .selectAll(".timeline-item")
+        .data(timelineData)
+        .enter()
+        .append("div")
+        .attr("class", "timeline-item");
+
+    timeline.append("div")
+        .attr("class", "timeline-date")
+        .text(function(d) { 
+            // Format the date object into a string
+            return (d3.timeFormat("%d/%m/%y")(d.date)); 
+        });
+
+    timeline.append("div")
+        .attr("class", "timeline-content")
+        .html(function(d) { 
+            // Highlight "arrest" and "arrested" in orange, "river" in blue
+            var content =d.event;
+            content = content.replace(/(bending|curve|bend)/gi, "<span class='highlight-orange'>$1</span>");
+            content = content.replace(/(tiskele|Tiskele)/gi, "<span class='highlight-blue'>$1</span>");
+            content = content.replace(/(arrests|arrested|arrest)/gi, "<span class='highlight-red'>$1</span>");
+            return content;
+        });
+
+    timeline.append("div")
+        .attr("class", "timeline-newsgroup")
+        .html(function(d) { 
+            // Add the newsgroup on the right side of the date
+            return "<h1>Source: "+d.news+"</h1><h3>Title: "+d.title+"</h3>";
+        });
+
+}).catch(function(error) {
+    console.error("Error loading CSV file:", error);
+});
+
+
+ 
+
+}
+
+
+function inno3() {
+var timeline = d3.select('.timeline');
+
+// Update the height of .timeline element
+var newHeight = 3600; // Set the new height value
+timeline.style('height', newHeight + 'px');
+document.getElementById("head").innerHTML = "<h2>Declaration of POK as Public Threat in 2011</h2>";
+
+d3.csv("Data/inno_3.csv").then(function(data) {
+    // Parse the date strings into date objects
+    var dateFormat = d3.timeParse("%d/%m/%y");
+    data.forEach(function(d) {
+        d.Published = dateFormat(d.Published);
+    });
+
+    // Convert the data to the desired format
+    var timelineData = data.map(function(d) {
+        return { news:d.newsgroup, date: d.Published, event: d.Content, title:d.Title };
+    });
+
+    // Create the timeline using D3.js
+    var timeline = d3.select(".timeline")
+        .selectAll(".timeline-item")
+        .data(timelineData)
+        .enter()
+        .append("div")
+        .attr("class", "timeline-item");
+
+    timeline.append("div")
+        .attr("class", "timeline-date")
+        .text(function(d) { 
+            // Format the date object into a string
+            return (d3.timeFormat("%d/%m/%y")(d.date)); 
+        });
+
+    timeline.append("div")
+        .attr("class", "timeline-content")
+        .html(function(d) { 
+            // Highlight "arrest" and "arrested" in orange, "river" in blue
+            var content =d.event;
+            content = content.replace(/(labelled|declared|justified|justifiably|justifiable)/gi, "<span class='highlight-orange'>$1</span>");
+            content = content.replace(/(damage|vandalism|throw|breakage|fight|smashed|smash|violence|clashes|break|violent)/gi, "<span class='highlight-blue'>$1</span>");
+            content = content.replace(/(public threat)/gi, "<span class='highlight-red'>$1</span>");
+            return content;
+        });
+
+    timeline.append("div")
+        .attr("class", "timeline-newsgroup")
+        .html(function(d) { 
+            // Add the newsgroup on the right side of the date
+            return "<h1>Source: "+d.news+"</h1><h3>Title: "+d.title+"</h3>";
+        });
+
+}).catch(function(error) {
+    console.error("Error loading CSV file:", error);
+});
+
+
+
+
+}
+
+function inno4() {
+    var timeline = d3.select('.timeline');
+
+// Update the height of .timeline element
+var newHeight = 1915; // Set the new height value
+timeline.style('height', newHeight + 'px');
+document.getElementById("head").innerHTML = "<h2>Drug Situation in 2013</h2>";
+
+d3.csv("Data/inno_4.csv").then(function(data) {
+    // Parse the date strings into date objects
+    var dateFormat = d3.timeParse("%d/%m/%y");
+    data.forEach(function(d) {
+        d.Published = dateFormat(d.Published);
+    });
+
+    // Convert the data to the desired format
+    var timelineData = data.map(function(d) {
+        console.log(d.Title); 
+        return { news:d.newsgroup, date: d.Published, event: d.Content, title:d.Title };
+    });
+
+    // Create the timeline using D3.js
+    var timeline = d3.select(".timeline")
+        .selectAll(".timeline-item")
+        .data(timelineData)
+        .enter()
+        .append("div")
+        .attr("class", "timeline-item");
+
+    timeline.append("div")
+        .attr("class", "timeline-date")
+        .text(function(d) { 
+            // Format the date object into a string
+            return (d3.timeFormat("%d/%m/%y")(d.date)); 
+        });
+
+    timeline.append("div")
+        .attr("class", "timeline-content")
+        .html(function(d) { 
+            // Highlight "arrest" and "arrested" in orange, "river" in blue
+            var content =d.event;
+            content = content.replace(/(broad distribution|ample distribution|wide distribution)/gi, "<span class='highlight-orange'>$1</span>");
+            content = content.replace(/(mental| problems| problem| health |problem, | heatlth,|problems,| hallucinations | paranoia | paranoia, |violent behavior)/gi, "<span class='highlight-blue'>$1</span>");
+            content = content.replace(/(interpol)/gi, "<span class='highlight-red'>$1</span>");
+            return content;
+        });
+
+    timeline.append("div")
+        .attr("class", "timeline-newsgroup")
+        .html(function(d) { 
+            // Add the newsgroup on the right side of the date
+            return "<h1>Source: "+d.news+"</h1><h3>Title: "+d.title+"</h3>";
+        });
+
+}).catch(function(error) {
+    console.error("Error loading CSV file:", error);
+});
+
+
+
+
+}
+    </script>
+</body>
+</html>

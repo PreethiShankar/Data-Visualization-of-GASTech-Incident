@@ -1,0 +1,32 @@
+{
+  "name": "Linnea Bergen",
+  "designation": "Linnea Bergen (Group Manager)",
+  "email_id" : "Linnea.Bergen@gastech.com.kronos",
+  "children": [
+    {
+      "name": "Carla Forluniau",
+      "designation": "Carla Forluniau (Administrative Assistant)",
+      "email_id" : "Carla.Forluniau@gastech.com.kronos"
+    },
+    {
+      "name": "Isak Baza",
+      "designation": "",
+      "email_id" : "Isak.Baza@gastech.com.kronos"
+    },
+    {
+      "name": "Nils Calixto",
+      "designation": "",
+      "email_id" : "Nils.Calixto@gastech.com.kronos"
+    },
+    {
+      "name": "Sven Flecha",
+      "designation": "",
+      "email_id" : "Sven.Flecha@gastech.com.kronos"
+    },
+    {
+      "name": "Lucas Alcazar",
+      "designation": "",
+      "email_id" : "Lucas.Alcazar@gastech.com.kronos"
+    }
+  ]
+}

@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CSE 578 Project</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <meta charset="utf-8">
+  <style>
+    .bar {
+      fill: steelblue;
+
+
+    }
+    .legend {
+      font-size: 14px;
+      font-weight: bold;
+    }
+    .legend rect {
+      width: 20px;
+      height: 20px;
+      margin-right: 5px;
+      display: inline-block;
+    }
+    /* CSS styles for the network graph */
+    .link {
+      stroke: #999;
+      stroke-opacity: 0.9;
+    }
+
+    .node {
+      stroke-width: 1.5px;
+      stroke: #fff;
+    }
+
+    .label {
+      font-size: 12px;
+      text-anchor: middle;
+    }
+    .tooltip {
+    position: absolute;
+    padding: 6px;
+    font-size: 12px;
+    background-color: #f8f8f8;
+    border: 1px solid #ccc;
+    pointer-events: none; /* Prevent the tooltip from blocking mouse events */
+}
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg" style="height:80px; padding: 10px; background-color:#274472;">
+  <a class="navbar-brand" href="index.html" style="font-size:25px;color: antiquewhite;" >Mini Challenge 1</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav" style="font-size:20px">
+    <ul class="navbar-nav" >
+      <li class="nav-item">
+        <a class="nav-link" href="background.html" style="color: antiquewhite;">Background</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="Data_Processing.html" style="color: antiquewhite;">Data Preprocessing</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="Q1.html" style="color: antiquewhite;">Q1</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="ques2.html" style="color: antiquewhite;">Q2</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="gantt.html" style="color: antiquewhite;">Q3</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="vis.html" style="color: antiquewhite;">Innovative</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<center>
+<div  id="pageHead">
+<h2> News Article Network Graph</h2>
+<h5>The network graph shows 5 clusters of news publications from a dataset based on their correlation, determined by the TF-IDF algorithm. Edge length indicates the strength of correlation.</h5>
+</div>
+  <div id="heading"></div>
+  <div id="mysvg" style="background: url('images/networkbg.jpeg'); background-size:cover; "></div>
+  <br><br>
+  <button id="back" class="btn btn-primary" style="display: none";> Go Back </button>
+</center>
+
+<br>
+<div class="row" style="background:url('images/avgbarbg.jpeg');background-size: cover; background-repeat: no-repeat;">
+<svg id="chart" class="col-sm-10"></svg>
+<div class="col-sm-2">
+  <form id="colorForm" style="margin-top: 150px;">
+    <div class="btn-group-vertical" role="group" aria-label="Basic checkbox toggle button group">
+  <input class="btn-check" type="checkbox" id="color1" name="color" value="color1" onchange="avgbar()">
+  <label class="btn btn-outline-primary" for="color1">Group 1</label><br>
+  <input class="btn-check" type="checkbox" id="color2" name="color" value="color2" onchange="avgbar()">
+  <label class="btn btn-outline-primary" for="color2">Group 2</label><br>
+  <input class="btn-check" type="checkbox" id="color3" name="color" value="color3" onchange="avgbar()">
+  <label class="btn btn-outline-primary" for="color3">Group 3</label><br>
+  <input class="btn-check" type="checkbox" id="color4" name="color" value="color4" onchange="avgbar()">
+  <label class="btn btn-outline-primary" for="color4">Group 4</label><br>
+  <input class="btn-check" type="checkbox" id="color5" name="color" value="color5" onchange="avgbar()">
+  <label class="btn btn-outline-primary" for="color5">Group 5</label><br>
+  <input class="btn-check" type="checkbox" id="all" name="color" value="all" onchange="avgbar()">
+  <label class="btn btn-outline-primary" for="all">Select All</label><br>
+
+
+</div>
+
+
+</div>
+
+
+  <script>
+
+
+var nodesData = new Map(); // Initialize a new Map object
+
+d3.csv("Data/color.csv").then(function(data) {
+  // Parse the CSV data and store it in the nodesData Map as key-value pairs
+  data.forEach(function(d) {
+    nodesData.set(d.newsgroup.toLowerCase(), d.color);
+  });
+
+  // Use the parsed data in your further logic or visualization
+  // ...
+
+}).catch(function(error) {
+  console.error('Error loading or parsing CSV file:', error);
+});
+
+    function back() {
+      document.getElementById("mysvg").style.background="url('images/networkbg.jpeg')";
+      document.getElementById("mysvg").style.backgroundSize="cover";
+
+      document.getElementById("colorForm").style.display="";
+      document.getElementById("pageHead").style.display="";
+
+      // Code to be executed when the button is clicked
+        d3.select("svg").remove();
+        document.getElementById("back").style.display="none";
+        document.getElementById("heading").innerHTML="";
+      drawNetworkGraph("Data/Book5.csv");
+      avgbar();
+      document.getElementById("chart").style.display="";
+
+
+    }
+    document.getElementById("back").addEventListener("click",back);
+    function drawNetworkGraph(csvFileName) {
+    d3.csv(csvFileName).then(function(data) {
+
+      // Create an SVG container for the network graph
+      var svg = d3.select("#mysvg")
+                  .append("svg")
+                  .attr("width", 1400) // Updated width
+                  .attr("height", 700)
+                  .style("display", "block")
+                  .style("margin", "auto");
+
+       
+
+      // Create a force simulation for the network graph
+      var simulation = d3.forceSimulation()
+                         .force("link", d3.forceLink().id(function(d) { return d.id; }))
+                         .force("charge", d3.forceManyBody().strength(-500))
+                         .force("center", d3.forceCenter(650, 400)); // Updated center coordinates
+
+      // Create links between nodes
+      var links = data.map(function(d) {
+        return { source: d.Source, target: d.Target };
+      });
+
+      // Create nodes for the network graph
+      var nodes = Array.from(new Set(links.flatMap(function(d) {
+        return [d.source, d.target];
+      })), function(id) {
+        return { id: id };
+      });
+
+      // Add links to the simulation
+      simulation.nodes(nodes)
+                .force("link")
+                .links(links);
+
+      // Create SVG lines for the links
+      var link = svg.selectAll(".link")
+                    .data(links)
+                    .enter()
+                    .append("line")
+                    .attr("class", "link")
+                    .attr("stroke-width", 5);
+
+      // Create SVG circles for the nodes
+
+      var node = svg.selectAll(".node")
+                    .data(nodes)
+                    .enter()
+                    .append("circle")
+                    .attr("class", "node")
+                    .attr("r", 10)
+                    .attr("fill",function(d) { return nodesData.get((d.id).toLowerCase())});
+
+
+
+      // Create SVG labels for the nodes
+      var label = svg.selectAll(".label")
+                     .data(nodes)
+                     .enter()
+                     .append("text")
+                     .attr("class", "label")
+                     .attr("display","none")
+                     .text(function(d) {return d.id; });
+
+
+      // Define an array of colors and group labels
+      var colors = ["blue", "yellow", "red", "green","purple"];
+      var groupLabels = ["Group 1", "Group 2", "Group 3", "Group 4", "Group 5"];
+
+// Create an SVG legend for colors
+      var legend = svg.selectAll(".legend")
+                      .data(groupLabels)
+                      .enter()
+                      .append("g")
+                      .attr("class", "legend")
+                      .attr("transform", function(d, i) { return "translate(0," + i * 25 + ")"; });
+
+      // Append colored rectangles to the legend
+      legend.append("rect")
+            .attr("x", 1200 - 18)
+            .attr("y", 359)
+            .attr("width", 18)
+            .attr("height", 18)
+            .style("fill", function(d, i) { return colors[i]; }); // Use colors array to set fill color
+
+      // Append text labels to the legend
+      legend.append("text")
+            .attr("x", 1200 - 24)
+            .attr("y", 368)
+            .attr("dy", ".35em")
+            .style("text-anchor", "end")
+            .style("fill","white")
+            .text(function(d) { return d; });
+
+
+
+                      // Set node name as label text
+
+      
+
+
+      node.on("mouseover", function(d) {
+        
+       d3.select(this)
+          .transition()
+          .duration(200)
+          .attr("r", 25) // Increase node size on mouseover
+          .style("stroke", "black"); // Add stroke color on mouseover
+
+    // Show the tooltip
+        tooltip.transition()
+            .duration(200)
+            .style("opacity", 0.9);
+        console.log(d);
+        tooltip.html("<h3>Source: " + d.srcElement.__data__.id.substring(0,d.srcElement.__data__.id.length-4)+"</h3>") // Set the tooltip content
+            .style("left", (d.pageX) + "px") // Position the tooltip at mouse pointer X position
+            .style("top", (d.pageY - 28) + "px"); // Position the tooltip above the mouse pointer
+    })
+    node.on("mouseout", function(d) {
+      d3.select(this)
+          .transition()
+          .duration(200)
+        .attr("r", 10) // Reset node size on mouseout
+        .style("stroke", "white"); 
+    // Hide the tooltip
+    tooltip.transition()
+        .duration(500)
+        .style("opacity", 0);
+    });
+
+                    
+      var tooltip = d3.select("body")
+            .append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0);
+
+
+      // Update node, link, and label positions on each tick of the simulation
+      simulation.on("tick", function() {
+        link.attr("x1", function(d) { return d.source.x; })
+            .attr("y1", function(d) { return d.source.y; })
+            .attr("x2", function(d) { return d.target.x; })
+            .attr("y2", function(d) { return d.target.y; });
+
+        node.attr("cx", function(d) { return d.x; })
+            .attr("cy", function(d) { return d.y; })
+            .on("click", function(event,d) {
+              tooltip.transition()
+                    .duration(500)
+                    .style("opacity", 0);
+
+                     console.log(d.id); // Add click event listener to nodes
+                      drawBarChart(d.id,nodesData.get((d.id).toLowerCase())); // Call drawBarChart function with node name as parameter
+                      document.getElementById("chart").style.display="none";
+                    });
+
+        label.attr("x", function(d) { return d.x; })
+             .attr("y", function(d) { return d.y - 5; }); // Adjust label position above the node
+      });
+    });
+  }
+    document.addEventListener("DOMContentLoaded", function() {
+  // Your function code here
+  drawNetworkGraph("Data/Book5.csv");
+  avgbar();
+  // Call your function or perform any other actions you want to take when the page is loaded
+});
+    function drawBarChart(csvFileName,col) {
+      csvFileName='Data/'+csvFileName;
+      document.getElementById("mysvg").style.background="url('images/barchartbg.jpeg')";
+      document.getElementById("mysvg").style.backgroundSize="cover";
+
+
+      document.getElementById("colorForm").style.display="none";
+      document.getElementById("pageHead").style.display="none";
+
+      var button=document.getElementById("back");
+      button.style.display="block";
+
+  // Load the CSV data
+  d3.select("svg").remove();
+
+  //d3.select('#heading').html('<h1>'+ ${csvFileName} +'</h1>');
+
+  var name=csvFileName.substring(5, csvFileName.length - 4); 
+  name = name.replace(/_/g, " ");
+  d3.select('#heading').html('<h2 class="d-inline-flex focus-ring py-1 px-2 text-decoration-none border rounded-2" style="--bs-focus-ring-color: rgba(var(--bs-success-rgb), .25)">' + name + '</h2>');
+d3.csv(csvFileName).then(function(data) {
+    // Process the data to get the first 10 words and their frequencies
+    var wordsData = data.slice(0, 10).map(function(d) {
+      return { word: d.Word, frequency: +d.Frequency };
+    });
+
+    // Create an SVG container for the bar chart
+      var margin = { top: 50, right: 50, bottom: 50, left: 270 }; // Define margins
+      var width = 1400 - margin.left - margin.right; // Adjust width with margins
+      var height = 600 - margin.top - margin.bottom; // Adjust height with margins
+
+      var svg = d3.select("#mysvg")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right) // Add margins to width
+        .attr("height", height + margin.top + margin.bottom) // Add margins to height
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");    // Set up scales for x and y axes
+
+    var xScale = d3.scaleBand()
+      .range([50, 800])
+      .padding(0.2)
+      .domain(wordsData.map(function(d) { return d.word; }));
+
+    var yScale = d3.scaleLinear()
+      .range([300, 0])
+      .domain([0, d3.max(wordsData, function(d) { return d.frequency; })+5]);
+
+    // Create bars for the bar chart
+
+    svg.selectAll(".bar")
+  .data(wordsData)
+  .enter()
+  .append("rect")
+  .attr("class", "bar")
+  .attr("x", function(d) { return xScale(d.word); })
+  .attr("y", function(d) { return yScale(d.frequency); })
+  .attr("width", xScale.bandwidth())
+  .attr("height", 0) // set initial height to 0
+  .style("fill", col)
+  .transition() // apply transition to the bars
+  .duration(1000) // set the duration of the transition in milliseconds
+  .attr("height", function(d) { return 300 - yScale(d.frequency); }); // set the final height of the bars
+
+    // Add x and y axes to the bar chart
+
+    svg.append("g")
+      .attr("transform", "translate(0, 300)")
+      .call(d3.axisBottom(xScale))
+      .selectAll("text")
+      .style("fill", "white")
+      .style("font-size","20px")
+      .attr("transform", "rotate(-90)") // rotate tick labels vertically
+      .attr("dy", "-0.5em") // adjust vertical alignment of tick labels
+      .attr("dx", "-1em")
+      .style("text-anchor","end")
+      .selectAll("line,path")
+      .style("fill", "white") // set fill color to white
+      .style("stroke", "white"); // Add a translation to the left for the y-axis label
+
+ 
+    svg.append("g")
+      .attr("transform", "translate(0, 300)")
+      .call(d3.axisBottom(xScale))
+      .selectAll("line,path")
+      .style("fill", "white") // set fill color to white
+      .style("stroke", "white");
+
+    svg.append("g")
+      .call(d3.axisLeft(yScale))
+      .attr("transform", "translate(50, 0)")
+      .selectAll("line,text,path")
+      .style("fill", "white") // set fill color to white
+      .style("stroke", "white"); // Add a translation to the left for the y-axis label
+
+    // Add x-axis label
+    svg.append("text")
+       .attr("x", 430) // x-coordinate of the title
+       .attr("y", 440) // y-coordinate of the title
+       .attr("text-anchor", "middle") // set the text anchor to middle for horizontal alignment
+       .style("fill","white")
+       .text("Words"); // set the text content of the title
+
+    // Add y-axis label
+    svg.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("x", -150) // x-coordinate of the label
+      .attr("y", 20) // y-coordinate of the label
+      .attr("text-anchor", "middle") // set the text anchor to middle for vertical alignment
+      .style("fill","white")
+      .text("Word Frequency"); // set the text content of the label
+  
+    // Add labels to the bars
+    svg.selectAll(".label")
+      .data(wordsData)
+      .enter()
+      .append("text")
+      .attr("class", "label")
+      .style("fill","white")
+      .attr("x", function(d) { return xScale(d.word) + xScale.bandwidth() / 2; })
+      .attr("y", function(d) { return yScale(d.frequency) - 5; })
+      .attr("text-anchor", "middle") 
+      .text(function(d) { return d.frequency; });
+});
+
+
+}
+function avgbar(){
+d3.select("#chart").selectAll("*").remove();
+    var c1 = 0;
+    var c2 = 0;
+    var c3 = 0;
+    var c4 = 0;
+    var c5 = 0;
+    var allc = 0;
+    var remc=0;
+    var specificColors = []; 
+if (document.getElementById('color1').checked) {
+    // Checkbox is checked, do something
+    c1=1;
+    specificColors.push('blue');
+  } 
+  else{
+    c1=0;
+  }
+if (document.getElementById('color2').checked) {
+    // Checkbox is checked, do something
+    c2=1;
+    specificColors.push('yellow');
+  } 
+  else{
+    c2=0;
+  }
+if (document.getElementById('color3').checked) {
+    // Checkbox is checked, do something
+    c3=1;
+    specificColors.push('red');
+  } 
+  else{
+    c3=0;
+  }
+if (document.getElementById('color4').checked) {
+    // Checkbox is checked, do something
+    c4=1;
+    specificColors.push('green');
+  } 
+  else{
+    c4=0;
+  }
+if (document.getElementById('color5').checked) {
+    // Checkbox is checked, do something
+    c5=1;
+    specificColors.push('purple');
+  } 
+  else{
+    c5=0;
+  }
+if (document.getElementById('all').checked) {
+  document.getElementById('color1').checked=true;
+  document.getElementById('color2').checked=true;
+  document.getElementById('color3').checked=true;
+  document.getElementById('color4').checked=true;
+  document.getElementById('color5').checked=true;
+    // Checkbox is checked, do something
+    specifiColors=[];
+    specificColors = ['blue', 'yellow','red','green', 'purple']; // Original specific colors array
+
+    allc=1;
+
+  } 
+  else{
+    allc=0;
+  }
+
+const col = ['Group 1', 'Group 2', 'Group 3', 'Group 4', 'Group 5'];
+const colorMap = {
+  blue: col[0],
+  yellow: col[1],
+  red: col[2],
+  green: col[3],
+  purple: col[4]
+};
+
+console.log(colorMap);
+
+  d3.csv("Data/avg_bar.csv").then(function(data) {
+      // Group data by color
+      var filteredData = data.filter(function(d) {
+        return specificColors.includes(d.color);
+      });
+      var groupedData = d3.group(filteredData, d => d.color);
+      
+      // Extract unique colors
+      var colors = Array.from(groupedData.keys());
+
+
+      
+      // Flatten groupedData into an array of objects
+      var flattenedData = [];
+      groupedData.forEach(function(group) {
+        flattenedData = flattenedData.concat(group);
+      });
+      
+      // Define chart dimensions
+      var margin = {top: 40, right: 20, bottom: 30, left: 120};
+      var width = 800 - margin.left - margin.right;
+      var height = 800 - margin.top - margin.bottom;
+      
+      // Create x and y scales
+      var x = d3.scaleLinear().range([0, width]);
+      var y = d3.scaleBand().range([height, 0]).padding(0.1);
+      
+      // Create chart container
+      var svg = d3.select("#chart")
+                  .attr("width", width + margin.left + margin.right)
+                  .attr("height", height + margin.top + margin.bottom)
+                  .append("g")
+                  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+      
+      // Set x and y domains
+      x.domain([0, d3.max(data, d => +d.count)]);
+      y.domain(flattenedData.map(d => d.newgroup));
+      
+      // Draw bars
+      var bars = svg.selectAll(".bar")
+                    .data(flattenedData)
+                    .enter()
+                    .append("rect")
+                    .attr("class", "bar")
+                    .attr("x", 0)
+                    .attr("y", d => y(d.newgroup))
+                    .attr("width", 0) // Start with width = 0
+                    .attr("height", y.bandwidth())
+                    .style("fill", d => colors[colors.indexOf(d.color)]);
+      
+      // Add animation using transitions
+      bars.transition()
+          .duration(2000) // Transition duration in milliseconds
+          .attr("width", d => x(d.count)); // Animate the width to final value
+      
+      // Draw x-axis
+      svg.append("g")
+          .attr("class", "x axis")
+          .attr("transform", "translate(0," + height + ")")
+          .call(d3.axisBottom(x));
+      
+      // Draw y-axis
+      svg.append("g")
+          .attr("class", "y axis")
+          .call(d3.axisLeft(y));
+      
+      // Add y-axis label
+      svg.append("text")
+          .attr("transform", "rotate(-90)")
+          .attr("y", 0 - margin.left)
+          .attr("x", 0 - (height / 2))
+          .attr("dy", "1em")
+          .style("text-anchor", "middle")
+          .style("font-size", "20px")
+          .text("Newsgroup");
+      
+      // Add chart title
+      svg.append("text")
+          .attr("x", width / 2)
+          .attr("y", 0 - (margin.top / 2))
+          .attr("text-anchor", "middle")
+          .style("font-size", "25px")
+          .text("Average No. of words");
+      
+        // Add color legend
+      var legend = svg.append("g")
+                      .attr("class", "legend")
+                      .attr("transform", "translate(" + (width + margin.right+ 50) + "," + (margin.top) + ")");
+                      
+      var legendItems = legend.selectAll("g")
+                              .data(colors)
+                              .enter()
+                              .append("g")
+                              .attr("transform", (d, i) => "translate(0," + (i * 25) + ")");
+                              
+      legendItems.append("rect")
+                 .attr("width", 20)
+                 .attr("height", 20)
+                 .style("fill", d => d);
+                 
+      legendItems.append("text")
+                 .attr("x", 30)
+                 .attr("y", 12)
+                 .text((d, i) => colorMap[specificColors[i]]);
+    }).catch(function(error) {
+      console.log(error);
+    });
+
+}
+
+    // Load the CSV data
+    
+  </script>
+</body>
+</html>
