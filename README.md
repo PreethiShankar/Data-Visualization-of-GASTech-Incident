@@ -16,15 +16,7 @@ Our project analyzes GAStech's environmental practices and their potential role 
 <li>To stop the server, go back to the terminal window and press Ctrl + C.</li>
 </ol>
 
-<h3>Contact Information:   </h3>
-<ol>
-<li>Aditya Sinha - asinha80@asu.edu</li>
-<li>Saurav Kumar - skuma259@asu.edu</li>
-<li>Praveenaa Kulandhaivel - pkulandh@asu.edu</li>
-<li>Preethi Shankar Raman - pshanka8@asu.edu</li>
-<li>Lowkya Vuppu - lvuppu@asu.edu</li>
-<li>Sree Pragna Vinnakoti - svinnak2@asu.edu</li>
-</ol>
+
 
 <h3>Folder Structure</h3>
 <ol>
